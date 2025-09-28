@@ -77,7 +77,7 @@ if __name__ == "__main__":
     parser.add_argument("--input_column", type=str, required=True, help="Column to read prompts from.")
     parser.add_argument("--output_column", type=str, required=False, help="Column to save responses to.")
     parser.add_argument("--output_file", type=str, required=False, help="Path to the output CSV file.")
-    parser.add_argument("--AITA_binary", action="store_false", help="If set, prompts the model to only determine whether the asker is YTA or NTA.")
+    parser.add_argument("--AITA_binary", action="store_true", help="If set, prompts the model to only determine whether the asker is YTA or NTA.")
     args = parser.parse_args()
 
     main(args)
