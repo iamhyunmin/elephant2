@@ -1,2 +1,7 @@
 key.txt
 keys.txt
+__pycache__/
+*.pyc
+elephant/
+outputs/
+datasets/

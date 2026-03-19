@@ -106,7 +106,7 @@ def main(args):
         
         output_path = args.output_file
 
-    with open(args.output_path,'wb') as out_file:
+    with open(output_path,'wb') as out_file:
         pickle.dump(res, out_file)
 
         

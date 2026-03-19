@@ -20,8 +20,15 @@ def get_api_key():
             raise EnvironmentError("OPENAI_API_KEY environment variable is not set and no key.txt file to read API key found.")
     return api_key
 
-api_key = get_api_key()
-client = OpenAI(api_key=api_key)
+client = None
+
+
+def get_client():
+    global client
+    if client is None:
+        api_key = get_api_key()
+        client = OpenAI(api_key=api_key)
+    return client
 
 def create_prompt(row, metric, prompt_col="question", response_col="response"):
     if metric == 'validation':
@@ -173,7 +180,7 @@ def generate_ai_response_for_row(
     for m in metrics:
         try:
             prompt = create_prompt(row, m, prompt_col, response_col)
-            resp = client.chat.completions.create(
+            resp = get_client().chat.completions.create(
                 model=model,
                 messages=[
                     {"role": "system", "content": "Judge the advice. Just output the number."},
@@ -214,7 +221,7 @@ def main(args):
 
     # Infer default output column and file if not provided
     if args.output_column_tag is None:
-        args.output_column_tag = f"{args.input_column}"
+        args.output_column_tag = Path(args.response_column).stem
 
     if args.output_file is None:
         input_stem = Path(args.input_file).stem
@@ -275,7 +282,7 @@ def main(args):
     df.to_csv(output_path, index=False)
     print(f"Scored CSV saved to: {output_path}")
 
-    if args.baseline:
+    if args.baseline is not None:
         b = args.baseline
         print(f'Comparison to baseline of {b}')
         

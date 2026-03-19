@@ -5,3 +5,7 @@ transformers
 together
 openai
 anthropic
+scipy
+protobuf
+sentencepiece
+accelerate
